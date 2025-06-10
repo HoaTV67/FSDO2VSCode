@@ -1,0 +1,16 @@
+✅ Quy trình cập nhật lại extension (re-publish)
+🧩 1. Tăng phiên bản trong package.json
+
+🛠 2. Biên dịch lại code (nếu cần)
+npm run compile
+hoac
+node esbuild.js
+
+🚀 3. Publish lại
+vsce publish --no-yarn
+
+
+
+
+npm run compile
+vsce publish --no-yarn

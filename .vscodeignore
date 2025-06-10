@@ -1,0 +1,23 @@
+# ❌ Bỏ toàn bộ thư mục không cần thiết
+node_modules/**
+src/**
+test/**
+.vscode/**
+.yarn/**
+.yarn*
+dist/**
+.vscode-test.mjs
+.vscode-test.js
+README_DEV_SETUP.md
+*.map
+*.log
+*.test.*
+*.spec.*
+esbuild.js
+tsconfig.json
+*.ts
+
+# ✅ Giữ lại phần cần đóng gói
+!dist/extension.js
+!node_modules/vscode
+!node_modules/@types

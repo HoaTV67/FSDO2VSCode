@@ -1,0 +1,77 @@
+{
+  "name": "fsdo2vscode",
+  "displayName": "AutoSiteX",
+  "publisher": "AutoSiteX",
+  "description": "AutoSiteX (FAST/FBO)",
+  "version": "0.0.5",
+  "icon": "icon.png",
+  "engines": {
+  "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "xml",
+    "sitemap",
+    "fbo",
+    "fast",
+    "autositex",
+    "extension",
+    "O2"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:xmlSitemap"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "xmlSitemap",
+          "name": "XML Sitemap"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "fsdo2vscode.helloWorld",
+        "title": "Hello World"
+      },
+      {
+        "command": "xmlSitemap.refresh",
+        "title": "Reload Sitemap"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+     "compile": "node esbuild.js",
+  "watch": "node esbuild.js --watch",
+    "package": "npm run compile",
+    "lint": "eslint src",
+    "check-types": "tsc --noEmit",
+    "test": "vscode-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AutoSiteX/fsdo2vscode"
+  },
+  "bugs": {
+    "url": "https://github.com/AutoSiteX/fsdo2vscode/issues"
+  },
+  "homepage": "https://github.com/AutoSiteX/fsdo2vscode",
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.100.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.5.2",
+    "esbuild": "^0.25.5",
+    "eslint": "^9.25.1",
+    "typescript": "^5.8.3"
+  }
+}
