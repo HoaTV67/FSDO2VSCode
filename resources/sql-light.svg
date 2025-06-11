@@ -1,0 +1,5 @@
+<!-- Cả sql-light.svg và sql-dark.svg dùng chung nội dung này -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+  <rect width="20" height="20" rx="3" ry="3" fill="#007acc"/>
+  <text x="3" y="15" font-size="10" fill="white" font-family="monospace">SQL</text>
+</svg>

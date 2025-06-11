@@ -35,24 +35,37 @@
       ]
     },
     "commands": [
-      {
-        "command": "fsdo2vscode.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "xmlSitemap.refresh",
-        "title": "Reload Sitemap",
-        "icon": "$(refresh)"
-      }
+		{
+		"command": "fsdo2vscode.helloWorld",
+		"title": "Hello World"
+		},
+		{
+		"command": "xmlSitemap.refresh",
+		"title": "Reload Sitemap",
+		"icon": "$(refresh)"
+		},
+		{
+		  "command": "fsdo2.connectToSql",
+		  "title": "Kết nối SQL tự động",
+		  "icon": {
+			"light": "resources/sql-light.svg",
+			"dark": "resources/sql-dark.svg"
+		  }
+		}
     ],
     "menus": {
       "view/title": [
-        {
-          "command": "xmlSitemap.refresh",
-          "when": "view == xmlSitemap",
-          "group": "navigation"
-        }
-      ]
+      {
+        "command": "xmlSitemap.refresh",
+        "when": "view == xmlSitemap",
+        "group": "navigation"
+      },
+      {
+        "command": "fsdo2.connectToSql",
+        "when": "view == xmlSitemap",
+        "group": "navigation@1"
+      }
+     ]
     }
   },
   "scripts": {
