@@ -1,44 +1,37 @@
-import * as fs from 'fs';
 import * as path from 'path';
-import * as vscode from 'vscode';
+import * as fs from 'fs';
 
-export function getSectionContent(sectionName: string, lines: string[]): string | null {
-  const startTag = `<${sectionName}>`;
-  const endTag = `</${sectionName}>`;
-  const startIndex = lines.findIndex(line => line.includes(startTag));
-  const endIndex = lines.findIndex(line => line.includes(endTag));
-  if (startIndex >= 0 && endIndex >= 0 && endIndex > startIndex) {
-    return lines.slice(startIndex, endIndex + 1).join('\n');
-  }
-  return null;
-}
+export function getSectionContent(xmlText: string, tag: string, basePath: string): string {
+  const cleanTag = tag.replace(/[<>]/g, '');
+  const regex = new RegExp(`<${cleanTag}[^>]*>([\s\S]*?)<\/${cleanTag}>`);
+  const match = regex.exec(xmlText);
+  if (!match) return '';
 
-export function findLineContaining(text: string, lines: string[]): number {
-  return lines.findIndex(line => line.includes(text));
-}
+  let section = match[1];
 
-export function findEntityReferenceLine(name: string, lines: string[], section: string): number {
-  const directLine = lines.findIndex(line => line.includes('<field') && line.includes(`name="${name}"`));
-  if (directLine >= 0) return directLine;
+  const entityRegex = /<!ENTITY\s+(\w+)\s+SYSTEM\s+"([^"]+)">/g;
+  const entityMap: Record<string, string> = {};
+  let entityMatch: RegExpExecArray | null;
 
-  const entityLine = lines.find(line =>
-    line.includes('<!ENTITY') && line.includes('SYSTEM') && line.includes(section)
-  );
-
-  if (entityLine) {
-    const match = entityLine.match(/<!ENTITY\s+(\w+)\s+SYSTEM\s+\"([^\"]+)\"/);
-    if (match) {
-      const entityName = match[1];
-      const filePath = path.resolve(path.dirname(vscode.window.activeTextEditor!.document.fileName), match[2]);
-      if (fs.existsSync(filePath)) {
-        const content = fs.readFileSync(filePath, 'utf8').split('\n');
-        const resolvedLine = content.findIndex(line => line.includes('<field') && line.includes(`name="${name}"`));
-        if (resolvedLine >= 0) {
-          return lines.findIndex(line => line.includes(`&${entityName};`));
-        }
-      }
+  while ((entityMatch = entityRegex.exec(xmlText))) {
+    const [, name, relPath] = entityMatch;
+    try {
+      const absPath = basePath ? path.resolve(basePath, relPath) : relPath;
+      entityMap[name] = fs.readFileSync(absPath, 'utf-8');
+    } catch (e) {
+      console.error("Không đọc được entity:", name, e);
     }
   }
 
-  return -1;
+  section = section.replace(/&(\w+);/g, (_, name) => entityMap[name] || `<!-- Lỗi: entity ${name} không tìm thấy -->`);
+  return section;
+}
+
+export function findLineContaining(lines: string[], keyword: string, contain?: string): number {
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].includes(keyword) && (!contain || lines[i].includes(contain))) {
+      return i;
+    }
+  }
+  return 0;
 }
