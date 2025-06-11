@@ -2,18 +2,11 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 export function getSectionContent(xmlText: string, tag: string, basePath: string): string {
-  const cleanTag = tag.replace(/[<>]/g, '');
-  const regex = new RegExp(`<${cleanTag}[^>]*>([\\s\\S]*?)<\\/${cleanTag}>`);
-  const match = regex.exec(xmlText);
-  if (!match) return '';
-
-  let section = match[1];
-
   const entityRegex = /<!ENTITY\s+(\w+)\s+SYSTEM\s+"([^"]+)">/g;
   const entityMap: Record<string, string> = {};
   let entityMatch: RegExpExecArray | null;
 
-  // Cố gắng đọc entity, nếu lỗi thì fallback chuỗi rỗng
+  // Bước 1: Đọc các entity
   while ((entityMatch = entityRegex.exec(xmlText))) {
     const [, name, relPath] = entityMatch;
     try {
@@ -21,18 +14,22 @@ export function getSectionContent(xmlText: string, tag: string, basePath: string
       const content = fs.readFileSync(absPath, 'utf-8');
       entityMap[name] = content;
     } catch {
-      entityMap[name] = `<!-- Lỗi: entity ${name} không đọc được -->`;
+      entityMap[name] = `<!-- lỗi đọc entity ${name} -->`;
     }
   }
 
-  // Thay thế entity lồng nhau tối đa 5 vòng
+  // Bước 2: Thay entity vào xmlText
   for (let i = 0; i < 5; i++) {
-    const newSection = section.replace(/&(\w+);/g, (_, name) => entityMap[name] || `<!-- Lỗi: entity ${name} không tìm thấy -->`);
-    if (newSection === section) break;
-    section = newSection;
+    const newText = xmlText.replace(/&(\w+);/g, (_, name) => entityMap[name] || `<!-- lỗi entity ${name} không có -->`);
+    if (newText === xmlText) break;
+    xmlText = newText;
   }
 
-  return section;
+  // Bước 3: Trích section sau khi entity đã được thay
+  const cleanTag = tag.replace(/[<>]/g, '');
+  const regex = new RegExp(`<${cleanTag}[^>]*>([\\s\\S]*?)<\\/${cleanTag}>`);
+  const match = regex.exec(xmlText);
+  return match ? match[1] : '';
 }
 
 export function findLineContaining(lines: string[], keyword: string, contain?: string): number {

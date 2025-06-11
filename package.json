@@ -2,7 +2,7 @@
   "name": "fsdo2vscode",
   "displayName": "AutoSiteX",
   "publisher": "AutoSiteX",
-  "description": "AutoSiteX (FAST/FBO)",
+  "description": "AutoSiteX",
   "version": "0.0.5",
   "icon": "icon.png",
   "engines": {
@@ -56,12 +56,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AutoSiteX/fsdo2vscode"
+    "url": "https://github.com/HoaTV67/FSDO2VSCode"
   },
   "bugs": {
-    "url": "https://github.com/AutoSiteX/fsdo2vscode/issues"
+    "url": "https://github.com/HoaTV67/FSDO2VSCode/issues"
   },
-  "homepage": "https://github.com/AutoSiteX/fsdo2vscode",
+  "homepage": "https://github.com/HoaTV67/FSDO2VSCode",
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
