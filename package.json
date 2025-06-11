@@ -3,7 +3,7 @@
   "displayName": "AutoSiteX",
   "publisher": "AutoSiteX",
   "description": "AutoSiteX",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.100.0"
@@ -41,9 +41,19 @@
       },
       {
         "command": "xmlSitemap.refresh",
-        "title": "Reload Sitemap"
+        "title": "Reload Sitemap",
+        "icon": "$(refresh)"
       }
-    ]
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "xmlSitemap.refresh",
+          "when": "view == xmlSitemap",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

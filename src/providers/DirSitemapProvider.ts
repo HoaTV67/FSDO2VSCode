@@ -86,13 +86,19 @@ export class DirSitemapProvider implements vscode.TreeDataProvider<XmlNode> {
       return map[element.label]?.() || [];
     }
 
-    return [
-      new XmlNode('<fields>', 'section'),
-      new XmlNode('<views>', 'section'),
-      new XmlNode('<commands>', 'section'),
-      new XmlNode('<script>', 'section'),
-      new XmlNode('<response>', 'section')
-    ];
+    
+    const sectionNames = ['<fields>', '<views>', '<commands>', '<script>', '<response>'];
+    const nodes: XmlNode[] = [];
+
+    for (const section of sectionNames) {
+      const content = getSectionContent(text, section, basePath);
+      if (content && content.trim().length > 0) {
+        nodes.push(new XmlNode(section, 'section'));
+      }
+    }
+
+    return nodes;
+
   }
 }
 

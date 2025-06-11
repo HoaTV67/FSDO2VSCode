@@ -49,6 +49,13 @@ export function activate(context: vscode.ExtensionContext) {
     targetEditor.selection = selection;
     targetEditor.revealRange(new vscode.Range(position, position), vscode.TextEditorRevealType.InCenter);
   });
+  
+	vscode.commands.registerCommand('xmlSitemap.refresh', () => {
+		if (activeProvider?.refresh) {
+		activeProvider.refresh();
+		}
+	});
+
 }
 
 export function deactivate() {}
